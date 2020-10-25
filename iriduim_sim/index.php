@@ -1,5 +1,5 @@
 <?php
-//meant to simulate the iriduim gate way
+//meant to simulate the iridium gateway
 ini_set('display_erros',1);
 ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
