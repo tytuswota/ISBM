@@ -6,7 +6,7 @@ from datetime import datetime
 #get gps data
 def get_gps(self):
     geolocator = Nominatim(user_agent="openstreetmap")
-    location = geolocator.geocode("Spijkenisse")
+    location = geolocator.geocode("Wijnhaven 107 Rotterdam")
     latitude = location.latitude
     longitude = location.longitude
     data_gps = 1
@@ -15,7 +15,7 @@ def get_gps(self):
 #gps data to one string
 def get_string(data_gps, latitude, longitude):
     now = datetime.now()
-    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    dt_string = now.strftime("%Y-%m-%d %H:%M:%S")
     string_value = str(data_gps) + ";" + str(latitude) + ";" + str(longitude) + ";" + dt_string
     return string_value
 
@@ -39,7 +39,7 @@ def get_hex(string_value):
 def get_url(binary_value):
     url = 'http://145.24.222.137/index.php?incoming_message='+ binary_value
     x = requests.get(url)
-    #print(x.text)
+    print(x.text)
     return x
 
 data_type, latitude, longitude = get_gps(self="")
