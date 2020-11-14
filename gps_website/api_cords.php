@@ -1,23 +1,19 @@
 <?php
 
-include_once 'includes/dbh.php';
+require_once("DB.php");
+$pdo = new DB();
 
-$sql = "SELECT * FROM gps order by date_time desc limit 20";
-$result = mysqli_query($conn, $sql);
-$resultCheck = mysqli_num_rows($result);
-
+$pdo->db->query("SELECT * FROM gps order by date_time desc limit 20");
 $cords = [];
 
-if ($resultCheck > 0) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        $cords[] = [
-            "id" => $row['id'],
-            "lat" => $row['longitude'],
-            "lon" => $row['latitude'],
-            "data" => $row['date_time'],
-        ];
-
-    }
+foreach($pdo->db->query("SELECT * FROM gps order by date_time desc limit 20", PDO::FETCH_ASSOC) as $row)
+{
+    $cords[] = [
+        "id" => $row['id'],
+        "lat" => $row['longitude'],
+        "lon" => $row['latitude'],
+        "data" => $row['date_time'],
+    ];
 }
 
 header('Content-Type: application/json');
