@@ -3,27 +3,52 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+* {
+  box-sizing: border-box;
+}
 
 body {
-   background-color: #65C9FF;
-   font-family: Arial, Helvetica, sans-serif;
-   width: 100%;
-   height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
 }
 
 .header {
-  padding: 30px;
+  padding: 60px;
   text-align: center;
-  background: #A1DEFF;
+  background: #2696FF;
+  color: white;
 }
 
 .header h1 {
-  font-size: 50px;
+  font-size: 40px;
+}
+
+.row {  
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap; 
+  flex-wrap: wrap;
+}
+
+.side {
+  -ms-flex: 30%; 
+  flex: 30%;
+  background-color: #E9F5FF;
+  padding: 20px;
+}
+
+.main {   
+  -ms-flex: 70%; 
+  flex: 70%;
+  background-color: white;
+  padding: 20px;
 }
 
 table {
@@ -40,17 +65,26 @@ td, th {
 
 tr:nth-child(even) {
     background-color: #CCFFB9;
-} 
+}
 
 #mapid { height: 460px; width: 740px; border: 1px solid #000000;}
+
 </style>
 </head>
 <body>
-
-<center>
 <div class="header">
-    <h1> Zeilboot status </h1>
+  <h1>Zeilboot tracker</h1>
+  <p><b> Webiste voor microtransat</b></p>
 </div>
+<div class="row">
+  <div class="side">
+    <h2>Status</h2>
+    <h4>Hier zie je de status van de zeilboot</h4>
+  </div>
+  <div class="main">
+    <h2>Map</h2>
+    <h5>Hier zie je de live locatie van de zeilboot</h5>
+<center>
 <br>
 <div id="mapid"> </div>
 <br>
@@ -61,7 +95,6 @@ tr:nth-child(even) {
         <th>Latitude</th> 
         <th>Date</th>
     </tr>
-
 <?php
     $sql = "SELECT * FROM gps order by date_time desc limit 20";
     $result = mysqli_query($conn, $sql);
@@ -90,12 +123,13 @@ tr:nth-child(even) {
 ?>
 </table>
 </center>
+  </div>
+</div>
 </body>
 </html>
 <script>
 var cords = JSON.parse('<?php echo json_encode($cords) ?>');
-</script>
-<script>
+
 var map = L.map('mapid');
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
