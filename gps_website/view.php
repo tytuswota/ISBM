@@ -1,11 +1,12 @@
 <?php
-    include_once 'includes/dbh.php';
+    require_once("includes/DB.php");
+    $pdo = new DB();
 ?>
 
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <head>
 <style>
 
@@ -63,29 +64,25 @@ tr:nth-child(even) {
     </tr>
 
 <?php
-    $sql = "SELECT * FROM gps order by date_time desc limit 20";
-    $result = mysqli_query($conn, $sql);
+    $stmt =
     $resultCheck = mysqli_num_rows($result);
-
     $cords = [];
 
-    if ($resultCheck > 0) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            $cords[] = [
-                "id" => $row['id'],
-                "lat" => $row['longitude'],
-                "lon" => $row['latitude'],
-                "data" => $row['date_time'],
-            ];
+    foreach($pdo->db->query("SELECT * FROM gps order by date_time desc limit 20", PDO::FETCH_ASSOC) as $row)
+    {
+        $cords[] = [
+            "id" => $row['id'],
+            "lat" => $row['longitude'],
+            "lon" => $row['latitude'],
+            "data" => $row['date_time'],
+        ];
 
-            echo '<tr>';
-            echo '<td>' . $row['id'] . '</td>';
-            echo '<td>' . $row['longitude'] . '</td>';
-            echo '<td>' . $row['latitude'] . '</td>';
-            echo '<td>' . $row['date_time'] . '</td>';
-            echo '</tr>';
-
-        }
+        echo '<tr>';
+        echo '<td>' . $row['id'] . '</td>';
+        echo '<td>' . $row['longitude'] . '</td>';
+        echo '<td>' . $row['latitude'] . '</td>';
+        echo '<td>' . $row['date_time'] . '</td>';
+        echo '</tr>';
     }
 ?>
 </table>
