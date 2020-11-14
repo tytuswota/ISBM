@@ -1,6 +1,6 @@
 <?php
 
-require_once("DB.php");
+require_once("includes/DB.php");
 $pdo = new DB();
 
 $pdo->db->query("SELECT * FROM gps order by date_time desc limit 20");

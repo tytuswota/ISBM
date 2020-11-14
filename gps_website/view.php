@@ -1,5 +1,5 @@
 <?php
-    require_once("DB.php");
+    require_once("includes/DB.php");
     $pdo = new DB();
 ?>
 
