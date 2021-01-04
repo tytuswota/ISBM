@@ -18,6 +18,29 @@ Uart gpsSerial(&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
 uint8_t buffer[200] = 
 { 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 };
 
+String intToHex(int myInt) {
+  return String(myInt, HEX);
+}
+
+String floatToHex(float myFloat) {
+  long signed int myFloatHex = *(int32_t*)&myFloat;
+  return String(myFloatHex, HEX);
+}
+
+String stringToHex(String myString) {
+  String myStringHex;
+  uint8_t sizeOfString = myString.length() + 1;
+  
+  char buf[sizeOfString];
+  myString.toCharArray(buf, sizeOfString);
+  
+  for (int i = 0; i < sizeof(buf) - 1; i++) {
+    myStringHex += String(buf[i],HEX);
+  }
+  
+  return myStringHex;
+}
+
 void SERCOM1_Handler()
 {
   gpsSerial.IrqHandler();
@@ -63,8 +86,9 @@ void sendMessage(String msg)
 {
   // Send the message
   SerialUSB.print("Trying to send the message.  This might take several minutes.\r\n");
-  
-  err = modem.sendSBDText(string2char(msg));
+  SerialUSB.println(msg);
+  SerialUSB.println(string2char(stringToHex(msg)));
+  /*err = modem.sendSBDText(string2char(msg));
   if (err != ISBD_SUCCESS)
   {
     SerialUSB.print("sendSBDText failed: error ");
@@ -76,7 +100,7 @@ void sendMessage(String msg)
   {
     SerialUSB.print("Message send: ");
     SerialUSB.println(msg);
-  }
+  }*/
 }
 
 void getAllMessages()
