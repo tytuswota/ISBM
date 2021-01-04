@@ -86,9 +86,11 @@ void sendMessage(String msg)
 {
   // Send the message
   SerialUSB.print("Trying to send the message.  This might take several minutes.\r\n");
-  SerialUSB.println(msg);
-  SerialUSB.println(string2char(stringToHex(msg)));
-  /*err = modem.sendSBDText(string2char(msg));
+  //err = modem.sendSBDText(string2char(stringToHex(msg)));
+  uint8_t buf[msg.length()];
+  
+  msg.getBytes(buf, msg.length());
+  err = modem.sendSBDBinary(buf, msg.length());
   if (err != ISBD_SUCCESS)
   {
     SerialUSB.print("sendSBDText failed: error ");
@@ -99,8 +101,8 @@ void sendMessage(String msg)
   else
   {
     SerialUSB.print("Message send: ");
-    SerialUSB.println(msg);
-  }*/
+    SerialUSB.println(stringToHex(msg));
+  }
 }
 
 void getAllMessages()
