@@ -1,0 +1,27 @@
+#######################################
+# Syntax Coloring Map for Message
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Message					KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+SETUP					KEYWORD2
+getSignal				KEYWORD2
+getGPSData				KEYWORD2
+getMessage				KEYWORD2
+printFirmwareRevision	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+orders					LITERAL1
+lattitude				LITERAL1
+longitude				LITERAL1
