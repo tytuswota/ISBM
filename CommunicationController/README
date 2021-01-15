@@ -1,3 +1,4 @@
+Voor dit project hebben we platform io gebruikt in VS code
 
-We grbuiken platform io voor dit project met visual studio code.
-installeer in visual studio code eerst platform io
+Een guide om platform io op te zetten
+https://docs.platformio.org/en/latest/integration/ide/vscode.html#quick-start
