@@ -9,6 +9,7 @@ float lattitude, longitude;
 int signalQuality = -1;
 int err;
 bool orders = false;
+DateTime dt;
 
 IridiumSBD modem(IridiumSerial);
 TinyGPSPlus gps;
