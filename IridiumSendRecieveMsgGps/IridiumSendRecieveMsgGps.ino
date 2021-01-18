@@ -2,6 +2,54 @@
 #include "Arduino.h"
 #include <Message.h>
 
+<<<<<<< HEAD
+#define IridiumSerial Serial1
+#define DIAGNOSTICS false // Change this to see diagnostics
+
+// Declare the IridiumSBD object
+float lattitude, longitude; 
+int signalQuality = -1;
+int err;
+bool orders = false;
+DateTime dt;
+
+IridiumSBD modem(IridiumSerial);
+TinyGPSPlus gps;
+
+Uart gpsSerial(&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
+
+uint8_t buffer[200] = 
+{ 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 };
+
+String intToHex(int myInt) {
+  return String(myInt, HEX);
+}
+
+String floatToHex(float myFloat) {
+  long signed int myFloatHex = *(int32_t*)&myFloat;
+  return String(myFloatHex, HEX);
+}
+
+String stringToHex(String myString) {
+  String myStringHex;
+  uint8_t sizeOfString = myString.length() + 1;
+  
+  char buf[sizeOfString];
+  myString.toCharArray(buf, sizeOfString);
+  
+  for (int i = 0; i < sizeof(buf) - 1; i++) {
+    myStringHex += String(buf[i],HEX);
+  }
+  
+  return myStringHex;
+}
+
+void SERCOM1_Handler()
+{
+  gpsSerial.IrqHandler();
+}
+=======
+>>>>>>> 1893c59d9f52e98fd49e8ea8d71cd2809101f295
 
 //-------------------Setup-------------------//
 void setup()
