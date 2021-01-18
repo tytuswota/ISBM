@@ -1,10 +1,10 @@
 #ifndef Message_h
 #define Message_h
 
-class messageclass
+class Message
 {
   public:
-    messageclass();
+    message();
     void SETUP();
     void printFirmwareRevision();
     String intToHex(int myInt);
@@ -22,6 +22,6 @@ class messageclass
     bool orders = false;
 };
 
-extern messageclass mess;
+extern Message msg;
 
 #endif
