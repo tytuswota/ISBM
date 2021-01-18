@@ -16,7 +16,7 @@ TinyGPSPlus gps;
 Uart gpsSerial(&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
 
 
-Message::Message()
+Message::message()
 {
 }
 

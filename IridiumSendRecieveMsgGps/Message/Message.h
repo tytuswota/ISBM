@@ -4,7 +4,7 @@
 class Message
 {
   public:
-    Message();
+    message();
     void SETUP();
     void printFirmwareRevision();
     String intToHex(int myInt);
