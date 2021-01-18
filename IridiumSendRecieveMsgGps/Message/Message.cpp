@@ -16,12 +16,12 @@ TinyGPSPlus gps;
 Uart gpsSerial(&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
 
 
-messageclass::messageclass()
+Message::Message()
 {
 }
 
 
-void messageclass::SETUP()
+void Message::SETUP()
 {
   gpsSerial.begin(9600); // Start the console serial port
   SerialUSB.begin(115200);
@@ -42,7 +42,7 @@ void messageclass::SETUP()
 }
 
 
-void messageclass::printFirmwareRevision()
+void Message::printFirmwareRevision()
 {
   char version[12];
   err = modem.getFirmwareVersion(version, sizeof(version));
@@ -59,20 +59,20 @@ void messageclass::printFirmwareRevision()
 }
 
 
-String messageclass::intToHex(int myInt) 
+String Message::intToHex(int myInt) 
 {
   return String(myInt, HEX);
 }
 
 
-String messageclass::floatToHex(float myFloat) 
+String Message::floatToHex(float myFloat) 
 {
   long signed int myFloatHex = *(int32_t*)&myFloat;
   return String(myFloatHex, HEX);
 }
 
 
-String messageclass::stringToHex(String myString) 
+String Message::stringToHex(String myString) 
 {
   String myStringHex;
   uint8_t sizeOfString = myString.length() + 1;
@@ -88,7 +88,7 @@ String messageclass::stringToHex(String myString)
 }
 
 
-char* messageclass::string2char(String command)
+char* Message::string2char(String command)
 {
     if(command.length()!=0){
         char *p = const_cast<char*>(command.c_str());
@@ -97,13 +97,13 @@ char* messageclass::string2char(String command)
 }
 
 
-void messageclass::SERCOM1_Handler()
+void Message::SERCOM1_Handler()
 {
   gpsSerial.IrqHandler();
 }
 
 
-void messageclass::sendMessage(String msg)
+void Message::sendMessage(String msg)
 {
   // Send the message
   SerialUSB.print("Trying to send the message.  This might take several minutes.\r\n");
@@ -127,7 +127,7 @@ void messageclass::sendMessage(String msg)
 }
 
 
-void messageclass::getMessage()
+void Message::getMessage()
 {
   while(1)
   {
@@ -175,7 +175,7 @@ void messageclass::getMessage()
 }
 
 
-void messageclass::getGPSData()
+void Message::getGPSData()
 {
   while(1)
   {
@@ -195,7 +195,7 @@ void messageclass::getGPSData()
 }
 
 
-void messageclass::getSignal()
+void Message::getSignal()
 {
   err = modem.getSignalQuality(signalQuality);
   if (err != ISBD_SUCCESS)
@@ -223,4 +223,4 @@ void ISBDDiagsCallback(IridiumSBD *device, char c)
 }
 #endif
 
-messageclass mess = messageclass();
+Message msg = Message();
