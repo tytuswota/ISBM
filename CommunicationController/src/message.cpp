@@ -21,11 +21,10 @@ Message::Message()
 
 void printHex(uint8_t num) 
 {
-  char hexChar[2];
+  /*char hexChar[2];
   sprintf(hexChar, "%02X", num);
   SerialUSB.print(" ");
-  SerialUSB.print(hexChar);
-  SerialUSB.print(" ");
+  SerialUSB.print(hexChar);*/
 }
 
 struct GpsMessage
@@ -35,20 +34,19 @@ struct GpsMessage
   float lattitude; //4
 };
 
+void Message::syncTime()
+{
+
+}
+
 void Message::SETUP()
 {
+
   gpsSerial.begin(9600); // Start the console serial port
   SerialUSB.begin(115200);
   while (!SerialUSB);
 
   IridiumSerial.begin(19200); // Start the serial port connected to the satellite modem
-  
-  GpsMessage gps;
-
-  gps.type = 1;
-  gps.lattitude = 52.67452;
-  gps.longitude = 4.67325;
-  uint8_t* gps_bytes = reinterpret_cast<uint8_t*>(&gps);
 
   //int x = 650;
   //uint8_t highByte = x >> 8; // 138
@@ -56,13 +54,15 @@ void Message::SETUP()
   //int result = highByte << 8 | lowByte;
 
   SerialUSB.println("Starting modem..."); // Begin satellite modem operation
+
+  GpsMessage gps {1, 52.67452, 4.67325};
+
+  uint8_t* gps_bytes = reinterpret_cast<uint8_t*>(&gps);
+  GpsMessage t;
+  memcpy(&t, gps_bytes, sizeof(t));
+
   
-  for(int i = 0; sizeof(gps_bytes); i++)
-  {
-    printHex(gps_bytes[i]);
-  }
-  
-  err = modem.begin();
+  /*err = modem.begin();
   if (err != ISBD_SUCCESS)
   {
     SerialUSB.print("Begin failed: error ");
@@ -70,7 +70,7 @@ void Message::SETUP()
     if (err == ISBD_NO_MODEM_DETECTED)
       SerialUSB.println("No modem detected: check wiring.");
     return;
-  }
+  }*/
 }
 
 

@@ -7,6 +7,7 @@ class Message
   public:
     Message();
     void SETUP();
+    void syncTime();
     void printFirmwareRevision();
     String intToHex(int myInt);
     String floatToHex(float myFloat);
