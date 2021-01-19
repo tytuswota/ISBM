@@ -1,8 +1,13 @@
+#include <Arduino.h>
+#include <TinyGPS++.h>
+
+#include <IridiumSBD.h>
+
 //-------------------Includes-------------------//
 #include "Arduino.h"
 #include <Message.h>
 
-<<<<<<< HEAD
+
 #define IridiumSerial Serial1
 #define DIAGNOSTICS false // Change this to see diagnostics
 
@@ -11,7 +16,6 @@ float lattitude, longitude;
 int signalQuality = -1;
 int err;
 bool orders = false;
-DateTime dt;
 
 IridiumSBD modem(IridiumSerial);
 TinyGPSPlus gps;
@@ -48,10 +52,7 @@ void SERCOM1_Handler()
 {
   gpsSerial.IrqHandler();
 }
-=======
->>>>>>> 1893c59d9f52e98fd49e8ea8d71cd2809101f295
 
-//-------------------Setup-------------------//
 void setup()
 {
   msg.SETUP(); 
@@ -99,9 +100,9 @@ void loop()
     {
       SerialUSB.println("user input:" + input);
       msg.getGPSData();
-      String msg = "1;" + String(msg.lattitude,6) + ";" + String(msg.longitude,6);
-      msg.sendMessage(msg);
-      msg.orders = false;
+      //String msg = "1;" + String(msg.lattitude,6) + ";" + String(msg.longitude,6);
+      //msg.sendMessage(msg);
+      //msg.orders = false;
     }
   } 
 }

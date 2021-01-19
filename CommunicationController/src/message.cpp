@@ -12,7 +12,7 @@ uint8_t buffer[200] =
 IridiumSBD modem(IridiumSerial);
 TinyGPSPlus gps;
 
-Uart gpsSerial(&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
+//Uart gpsSerial(&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
 
 
 Message::Message()
@@ -42,7 +42,7 @@ void Message::syncTime()
 void Message::SETUP()
 {
 
-  gpsSerial.begin(9600); // Start the console serial port
+  //gpsSerial.begin(9600); // Start the console serial port
   SerialUSB.begin(115200);
   while (!SerialUSB);
 
@@ -129,10 +129,10 @@ char* Message::string2char(String command)
 } 
 
 
-void Message::SERCOM1_Handler()
-{
-  gpsSerial.IrqHandler();
-}
+//void Message::SERCOM1_Handler()
+//{
+//  gpsSerial.IrqHandler();
+//}
 
 
 void Message::sendMessage(String msg)
@@ -210,7 +210,7 @@ void Message::getMessage()
 
 void Message::getGPSData()
 {
-  while(1)
+  /*while(1)
   {
    while (gpsSerial.available() > 0)
    { gps.encode(gpsSerial.read()); }
@@ -224,7 +224,7 @@ void Message::getGPSData()
   }
   
   SerialUSB.println("lat: " + String(lattitude, 6));
-  SerialUSB.println("long: " + String(longitude, 6));
+  SerialUSB.println("long: " + String(longitude, 6));*/
 }
 
 

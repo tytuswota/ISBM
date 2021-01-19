@@ -1,9 +1,21 @@
 #include <Arduino.h>
 #include "message.h"
+#include <gps.h>
+#include <clock.h>
+
+Uart gpsSerial(&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
 
 void setup() {
   msg.SETUP(); 
-  msg.printFirmwareRevision();
+  gpsSerial.begin(9600);
+  gps.SETUP();
+  
+  //msg.printFirmwareRevision();
+}
+
+void SERCOM1_Handler()
+{
+  gpsSerial.IrqHandler();
 }
 
 void loop() 
@@ -31,7 +43,22 @@ void loop()
     if((input == "gps"))                              // 'gps' to request current longitude and lattitude from GPS module
     {
       SerialUSB.println("user input:" + input);
-      msg.getGPSData();
+      float lattitude;
+      float longitude;
+      int x;
+      SerialUSB.println("in the getgps function");
+      gps.getLattitudeLongitude(gpsSerial, lattitude, longitude, x);
+
+      SerialUSB.println("lat: " + String(lattitude, 6));
+      SerialUSB.println("long: " + String(longitude, 6));
+      
+      msg.orders = false;
+    }
+
+    if((input == "time"))                          // 'get msg' to download the first MT (Mobile Terminated) message to ISBD module *REQUIRES LINE-OF-SIGHT VIEW TO SATELLITE*
+    {
+      SerialUSB.println("user input:" + input);
+      clock.showDateTime();
       msg.orders = false;
     }
     
