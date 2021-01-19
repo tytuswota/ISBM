@@ -2,6 +2,7 @@
 #include "message.h"
 #include <IridiumSBD.h>
 #include <TinyGPS++.h>
+#include <clock.h>
 
 #define IridiumSerial Serial1
 #define DIAGNOSTICS false // Change this to see diagnostics
@@ -30,8 +31,12 @@ void printHex(uint8_t num)
 struct GpsMessage
 {
   uint8_t type; //1
-  float longitude; //4
-  float lattitude; //4
+  int longitude; //4
+  int lattitude; //4
+  //int day;
+  //int month;
+  //int hour;
+  //int minute;
 };
 
 void Message::syncTime()
@@ -55,14 +60,8 @@ void Message::SETUP()
 
   SerialUSB.println("Starting modem..."); // Begin satellite modem operation
 
-  GpsMessage gps {1, 52.67452, 4.67325};
-
-  uint8_t* gps_bytes = reinterpret_cast<uint8_t*>(&gps);
-  GpsMessage t;
-  memcpy(&t, gps_bytes, sizeof(t));
-
   
-  /*err = modem.begin();
+  err = modem.begin();
   if (err != ISBD_SUCCESS)
   {
     SerialUSB.print("Begin failed: error ");
@@ -70,7 +69,7 @@ void Message::SETUP()
     if (err == ISBD_NO_MODEM_DETECTED)
       SerialUSB.println("No modem detected: check wiring.");
     return;
-  }*/
+  }
 }
 
 
@@ -140,11 +139,14 @@ void Message::sendMessage(String msg)
   // Send the message
   SerialUSB.print("Trying to send the message.  This might take several minutes.\r\n");
   //err = modem.sendSBDText(string2char(stringToHex(msg)));
-  uint8_t buf[msg.length()];
+  //uint8_t buf[msg.length()];
+  //msg.getBytes(buf, msg.length());
+
+  GpsMessage gps {1, 5267452, 467325};
+
+  uint8_t* gps_bytes = reinterpret_cast<uint8_t*>(&gps);
   
-  msg.getBytes(buf, msg.length());
-  
-  err = modem.sendSBDBinary(buf, msg.length());
+  err = modem.sendSBDBinary(gps_bytes, sizeof(gps));
   //err = modem.sendSBDBinary(msg, sizeof(gps));
   if (err != ISBD_SUCCESS)
   {

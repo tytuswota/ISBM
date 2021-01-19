@@ -6,10 +6,9 @@
 Uart gpsSerial(&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
 
 void setup() {
-  msg.SETUP(); 
   gpsSerial.begin(9600);
   gps.SETUP();
-  
+  msg.SETUP(); 
   //msg.printFirmwareRevision();
 }
 
@@ -66,6 +65,13 @@ void loop()
     {
       SerialUSB.println("user input:" + input);
       msg.getMessage();
+      msg.orders = false;
+    }
+
+    if((input == "send msg"))                          // 'get msg' to download the first MT (Mobile Terminated) message to ISBD module *REQUIRES LINE-OF-SIGHT VIEW TO SATELLITE*
+    {
+      SerialUSB.println("user input:" + input);
+      msg.sendMessage("a");
       msg.orders = false;
     }
   
