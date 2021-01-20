@@ -9,7 +9,7 @@ void setup() {
   gpsSerial.begin(9600);
   gps.SETUP();
   msg.SETUP(); 
-  //msg.printFirmwareRevision();
+  msg.printFirmwareRevision();
 }
 
 void SERCOM1_Handler()
@@ -44,9 +44,12 @@ void loop()
       SerialUSB.println("user input:" + input);
       float lattitude;
       float longitude;
-      int x;
+      int day;
+      int month;
+      int hour;
+      int minute;
       SerialUSB.println("in the getgps function");
-      gps.getLattitudeLongitude(gpsSerial, lattitude, longitude, x);
+      gps.getLattitudeLongitude(gpsSerial, lattitude, longitude, day, month, hour, minute);
 
       SerialUSB.println("lat: " + String(lattitude, 6));
       SerialUSB.println("long: " + String(longitude, 6));
@@ -71,16 +74,21 @@ void loop()
     if((input == "send msg"))                          // 'get msg' to download the first MT (Mobile Terminated) message to ISBD module *REQUIRES LINE-OF-SIGHT VIEW TO SATELLITE*
     {
       SerialUSB.println("user input:" + input);
-      msg.sendMessage("a");
+      //msg.sendMessage("a");
       msg.orders = false;
     }
   
     if((input == "send gps msg"))                     // 'send gps msg' to send MO (Mobile Originated) message to Iridium Gateway *REQUIRES LINE-OF-SIGHT VIEW TO SATELLITE*
     {
       SerialUSB.println("user input:" + input);
-      msg.getGPSData();
-      String message = "1;" + String(msg.lattitude,6) + ";" + String(msg.longitude,6);
-      msg.sendMessage(message);
+      float lattitude;
+      float longitude;
+      int day;
+      int month;
+      int hour;
+      int minute;
+      gps.getLattitudeLongitude(gpsSerial, lattitude, longitude, day, month, hour, minute);
+      msg.sendGpsMessage(lattitude, longitude, day, month, hour, minute);
       msg.orders = false;
     }
   }
