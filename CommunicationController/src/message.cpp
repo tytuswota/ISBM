@@ -7,6 +7,19 @@
 #define IridiumSerial Serial1
 #define DIAGNOSTICS false // Change this to see diagnostics
 
+struct GpsMessage
+{
+  uint8_t type; //1
+  float longitude; //4
+  float lattitude; //4
+  int day;
+  int month;
+  int hour;
+  int minute;
+};
+
+GpsMessage gpsMessage;
+
 uint8_t buffer[200] = 
 { 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 };
 
@@ -14,34 +27,9 @@ IridiumSBD modem(IridiumSerial);
 TinyGPSPlus gps;
 
 //Uart gpsSerial(&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
-
-
 Message::Message()
 {
-}
-
-void printHex(uint8_t num) 
-{
-  /*char hexChar[2];
-  sprintf(hexChar, "%02X", num);
-  SerialUSB.print(" ");
-  SerialUSB.print(hexChar);*/
-}
-
-struct GpsMessage
-{
-  uint8_t type; //1
-  int longitude; //4
-  int lattitude; //4
-  //int day;
-  //int month;
-  //int hour;
-  //int minute;
-};
-
-void Message::syncTime()
-{
-
+  
 }
 
 void Message::SETUP()
@@ -52,11 +40,6 @@ void Message::SETUP()
   while (!SerialUSB);
 
   IridiumSerial.begin(19200); // Start the serial port connected to the satellite modem
-
-  //int x = 650;
-  //uint8_t highByte = x >> 8; // 138
-  //uint8_t lowByte = x & 0xFF; // 2
-  //int result = highByte << 8 | lowByte;
 
   SerialUSB.println("Starting modem..."); // Begin satellite modem operation
 
@@ -71,7 +54,6 @@ void Message::SETUP()
     return;
   }
 }
-
 
 void Message::printFirmwareRevision()
 {
@@ -90,64 +72,20 @@ void Message::printFirmwareRevision()
 }
 
 
-String Message::intToHex(int myInt) 
+void Message::sendGpsMessage(float lattitude, float longitude, int day, int month, int hour, int minute)
 {
-  return String(myInt, HEX);
+  gpsMessage = {1, lattitude, longitude, day, month, hour, minute};
+  uint8_t* gps_bytes = reinterpret_cast<uint8_t*>(&gpsMessage);
+  sendMessage(gps_bytes, sizeof(gpsMessage));
 }
 
-
-String Message::floatToHex(float myFloat) 
-{
-  long signed int myFloatHex = *(int32_t*)&myFloat;
-  return String(myFloatHex, HEX);
-}
-
-
-String Message::stringToHex(String myString) 
-{
-  String myStringHex;
-  uint8_t sizeOfString = myString.length() + 1;
-  
-  char buf[sizeOfString];
-  myString.toCharArray(buf, sizeOfString);
-  
-  for (int i = 0; i < sizeof(buf) - 1; i++) {
-    myStringHex += String(buf[i],HEX);
-  }
-  
-  return myStringHex;
-}
-
-
-char* Message::string2char(String command)
-{
-    if(command.length()!=0){
-        char *p = const_cast<char*>(command.c_str());
-        return p;
-    }
-} 
-
-
-//void Message::SERCOM1_Handler()
-//{
-//  gpsSerial.IrqHandler();
-//}
-
-
-void Message::sendMessage(String msg)
+void Message::sendMessage(uint8_t* msg, size_t size)
 {
   // Send the message
   SerialUSB.print("Trying to send the message.  This might take several minutes.\r\n");
-  //err = modem.sendSBDText(string2char(stringToHex(msg)));
-  //uint8_t buf[msg.length()];
-  //msg.getBytes(buf, msg.length());
 
-  GpsMessage gps {1, 5267452, 467325};
-
-  uint8_t* gps_bytes = reinterpret_cast<uint8_t*>(&gps);
   
-  err = modem.sendSBDBinary(gps_bytes, sizeof(gps));
-  //err = modem.sendSBDBinary(msg, sizeof(gps));
+  err = modem.sendSBDBinary(msg, size);
   if (err != ISBD_SUCCESS)
   {
     SerialUSB.print("sendSBDText failed: error ");
@@ -157,8 +95,7 @@ void Message::sendMessage(String msg)
   }
   else
   {
-    SerialUSB.print("Message send: ");
-    SerialUSB.println(stringToHex(msg));
+    SerialUSB.print("Message send ");
   }
 }
 
@@ -209,27 +146,6 @@ void Message::getMessage()
   }
 }
 
-
-void Message::getGPSData()
-{
-  /*while(1)
-  {
-   while (gpsSerial.available() > 0)
-   { gps.encode(gpsSerial.read()); }
-
-      if (gps.location.isUpdated())
-      {
-       lattitude=gps.location.lat();
-       longitude=gps.location.lng();
-       break;
-      }
-  }
-  
-  SerialUSB.println("lat: " + String(lattitude, 6));
-  SerialUSB.println("long: " + String(longitude, 6));*/
-}
-
-
 void Message::getSignal()
 {
   err = modem.getSignalQuality(signalQuality);
@@ -244,18 +160,5 @@ void Message::getSignal()
   SerialUSB.print(signalQuality);
   SerialUSB.println(".");
 }
-
-
-#if DIAGNOSTICS
-void ISBDConsoleCallback(IridiumSBD *device, char c)
-{
-  Serial.write(c);
-}
-
-void ISBDDiagsCallback(IridiumSBD *device, char c)
-{
-  Serial.write(c);
-}
-#endif
 
 Message msg = Message();

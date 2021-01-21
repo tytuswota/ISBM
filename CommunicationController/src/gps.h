@@ -8,7 +8,7 @@ class GPS
     GPS();
     void SETUP();
     void getDateTime(byte &date, byte &time);
-    void getLattitudeLongitude(Uart &gpsSerial, float &lattitude, float &longitude, int &x);
+    void getLattitudeLongitude(Uart &gpsSerial, float &lattitude, float &longitude, int &day, int &month, int &hour, int &minute);
     void SERCOM1_Handler();
 };  
 

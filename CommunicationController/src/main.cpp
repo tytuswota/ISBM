@@ -5,11 +5,29 @@
 
 Uart gpsSerial(&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
 
+
+#include <SPI.h>
+#include "wiring_private.h" // pinPeripheral() function
+#define CSPIN 6
+#define Time 25
+
+//D3-MISO, D4-MOSI, D5-SCK
+SPIClass SPI2 (&sercom2, 3, 5, 4, SPI_PAD_0_SCK_3, SERCOM_RX_PAD_1); 
+
 void setup() {
   gpsSerial.begin(9600);
   gps.SETUP();
   msg.SETUP(); 
-  //msg.printFirmwareRevision();
+  msg.printFirmwareRevision();
+
+  //Get all pins and SPI ports setup
+  SPI2.begin();
+  pinPeripheral(3, PIO_SERCOM_ALT);
+  pinPeripheral(4, PIO_SERCOM_ALT);
+  pinPeripheral(5, PIO_SERCOM);
+  pinMode(CSPIN, OUTPUT);
+  digitalWrite(CSPIN, HIGH); //make sure it is high to start
+  SPI2.setClockDivider(SPI_CLOCK_DIV128); //Slow down the master a bit
 }
 
 void SERCOM1_Handler()
@@ -19,6 +37,9 @@ void SERCOM1_Handler()
 
 void loop() 
 {
+  //digitalWrite(CSPIN, LOW);// Select can bus
+  //SPI2.transfer('a');//Setting character
+  //digitalWrite(CSPIN, HIGH);// Deselect can bus
   
   if(!msg.orders)
   {
@@ -44,9 +65,12 @@ void loop()
       SerialUSB.println("user input:" + input);
       float lattitude;
       float longitude;
-      int x;
+      int day;
+      int month;
+      int hour;
+      int minute;
       SerialUSB.println("in the getgps function");
-      gps.getLattitudeLongitude(gpsSerial, lattitude, longitude, x);
+      gps.getLattitudeLongitude(gpsSerial, lattitude, longitude, day, month, hour, minute);
 
       SerialUSB.println("lat: " + String(lattitude, 6));
       SerialUSB.println("long: " + String(longitude, 6));
@@ -71,16 +95,21 @@ void loop()
     if((input == "send msg"))                          // 'get msg' to download the first MT (Mobile Terminated) message to ISBD module *REQUIRES LINE-OF-SIGHT VIEW TO SATELLITE*
     {
       SerialUSB.println("user input:" + input);
-      msg.sendMessage("a");
+      //msg.sendMessage("a");
       msg.orders = false;
     }
   
     if((input == "send gps msg"))                     // 'send gps msg' to send MO (Mobile Originated) message to Iridium Gateway *REQUIRES LINE-OF-SIGHT VIEW TO SATELLITE*
     {
       SerialUSB.println("user input:" + input);
-      msg.getGPSData();
-      String message = "1;" + String(msg.lattitude,6) + ";" + String(msg.longitude,6);
-      msg.sendMessage(message);
+      float lattitude;
+      float longitude;
+      int day;
+      int month;
+      int hour;
+      int minute;
+      gps.getLattitudeLongitude(gpsSerial, lattitude, longitude, day, month, hour, minute);
+      msg.sendGpsMessage(lattitude, longitude, day, month, hour, minute);
       msg.orders = false;
     }
   }
