@@ -4,6 +4,11 @@
 
 RTCZero rtc;
 
+Clock::Clock()
+{
+
+}
+
 void Clock::SETUP(int alarmMinutes)
 {
     rtc.begin();
@@ -23,11 +28,29 @@ void Clock::setAlarmTime(int alarmMinutes)
 
 void Clock::showDateTime()
 {
-    SerialUSB.println(rtc.getDay());
-    SerialUSB.println(rtc.getMonth());
+    SerialUSB.print(rtc.getDay());
+    SerialUSB.print("/");
+    SerialUSB.print(rtc.getMonth());
+    SerialUSB.print("/");
     SerialUSB.println(rtc.getYear());
 
-    SerialUSB.println(rtc.getHours());
-    SerialUSB.println(rtc.getMinutes());
+    SerialUSB.print(rtc.getHours());
+    SerialUSB.print(":");
+    SerialUSB.print(rtc.getMinutes());
+    SerialUSB.print(":");
     SerialUSB.println(rtc.getSeconds());
+}
+
+void Clock::getDateTime(int &day, int &month, int &hour, int &minute)
+{
+    month = rtc.getMonth();
+    day = rtc.getDay();
+    hour = rtc.getHours();
+    minute = rtc.getMinutes();
+}
+
+bool alarmHasMatch(int hour, int minute)
+{
+    if(hour == rtc.getHours() && minute == rtc.getMinutes()) return true;
+    return false;
 }

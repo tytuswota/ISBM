@@ -3,6 +3,9 @@
 #include <gps.h>
 #include <clock.h>
 
+int alarmMonth, alarmDay, alarmHour, alarmMinute;
+bool alarmIsSet = false;
+
 Uart gpsSerial(&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
 
 void setup() {
@@ -90,6 +93,34 @@ void loop()
       gps.getLattitudeLongitude(gpsSerial, lattitude, longitude, day, month, hour, minute);
       msg.sendGpsMessage(lattitude, longitude, day, month, hour, minute);
       msg.orders = false;
+    }
+
+    if((input == "set alarm"))
+    {
+      SerialUSB.println("Om de hoeveel minuten moet het alarm afgaan?");
+      String alarmMinutes = SerialUSB.readString();
+      clock.getDateTime(alarmMonth, alarmDay, alarmHour, alarmMinute);    // hier worde de alarmtijd gesynced met de clock
+      
+      alarmMinute += alarmMinutes.toInt();                                // hier word het aantal minuten opgeteld bij de alarmtijd
+      if(alarmMinute > 59)                                                // als aantal minuten groter is dan 60 word het omgezet in aantal uren en minuten
+      {
+        alarmHour +=  alarmMinute / 60;
+        alarmMinute %=  60;
+      }
+      
+      alarmIsSet = true;
+    }
+  }
+
+  if(alarmIsSet)                                                          // alleen als er een alarm is gezet wordt deze if statement aangeroepen
+  {
+    if(clock.alarmHasMatch(alarmHour, alarmMinute))                       // als de alarm tijd overeenkomt met huidige tijd -> alarm gaat af
+    {
+      SerialUSB.print("ALARM OM: ");
+      SerialUSB.print(alarmHour);
+      SerialUSB.print(":");
+      SerialUSB.print(alarmMinute);
+      alarmIsSet = false;
     }
   }
 }

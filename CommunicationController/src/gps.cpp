@@ -31,10 +31,20 @@ void GPS::getLattitudeLongitude(Uart &gpsSerial1, float &lattitude, float &longi
             //+1 hour for CET
             clock.syncTime((gpsModule.time.hour() + 1), gpsModule.time.minute(), 
             gpsModule.time.second(), gpsModule.date.day(), gpsModule.date.month(), gpsModule.date.year());
-            
+
             break;
         }
     }
+}
+
+void GPS::syncTime(int &day, int &month, int &hour, int minute)
+{
+    day = gpsModule.date.day();
+    month = gpsModule.date.month();
+    hour = gpsModule.time.hour();
+    minute = gpsModule.time.minute();
+    clock.syncTime((gpsModule.time.hour() + 1), gpsModule.time.minute(), 
+    gpsModule.time.second(), gpsModule.date.day(), gpsModule.date.month(), gpsModule.date.year());
 }
 
 void GPS::getDateTime(byte &date, byte &time)
