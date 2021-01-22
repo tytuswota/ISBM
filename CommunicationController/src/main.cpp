@@ -8,11 +8,29 @@ bool alarmIsSet = false;
 
 Uart gpsSerial(&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
 
+
+#include <SPI.h>
+#include "wiring_private.h" // pinPeripheral() function
+#define CSPIN 6
+#define Time 25
+
+//D3-MISO, D4-MOSI, D5-SCK
+SPIClass SPI2 (&sercom2, 3, 5, 4, SPI_PAD_0_SCK_3, SERCOM_RX_PAD_1); 
+
 void setup() {
   gpsSerial.begin(9600);
   gps.SETUP();
   msg.SETUP(); 
   msg.printFirmwareRevision();
+
+  //Get all pins and SPI ports setup
+  SPI2.begin();
+  pinPeripheral(3, PIO_SERCOM_ALT);
+  pinPeripheral(4, PIO_SERCOM_ALT);
+  pinPeripheral(5, PIO_SERCOM);
+  pinMode(CSPIN, OUTPUT);
+  digitalWrite(CSPIN, HIGH); //make sure it is high to start
+  SPI2.setClockDivider(SPI_CLOCK_DIV128); //Slow down the master a bit
 }
 
 void SERCOM1_Handler()
@@ -22,6 +40,9 @@ void SERCOM1_Handler()
 
 void loop() 
 {
+  //digitalWrite(CSPIN, LOW);// Select can bus
+  //SPI2.transfer('a');//Setting character
+  //digitalWrite(CSPIN, HIGH);// Deselect can bus
   
   if(!msg.orders)
   {

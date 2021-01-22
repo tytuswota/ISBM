@@ -10,7 +10,7 @@ void GPS::SETUP()
     clock.SETUP(40);
 }
 
-void GPS::getLattitudeLongitude(Uart &gpsSerial1, float &lattitude, float &longitude, int &day, int &month, int &hour, int minute)
+void GPS::getLattitudeLongitude(Uart &gpsSerial1, float &lattitude, float &longitude, int &day, int &month, int &hour, int &minute)
 {
     //TO DO attempt timeout 
     while(1)
