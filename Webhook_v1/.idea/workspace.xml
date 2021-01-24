@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ea82598a-2bee-40d1-99a4-eba777b5b494" name="Default Changelist" comment="" />
+    <list default="true" id="ea82598a-2bee-40d1-99a4-eba777b5b494" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/LocalizationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/LocalizationController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/MOMessageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MOMessageController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebhookHandler.php" beforeDir="false" afterPath="$PROJECT_DIR$/WebhookHandler.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/view.php" beforeDir="false" afterPath="$PROJECT_DIR$/view.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,7 +20,11 @@
       <executable />
     </execution>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="ProjectId" id="1mWKXOILVaLfB2bc79k4TrdIB3x" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -20,7 +32,15 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../experimental/gps_website/index.php" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../experimental/gps_website/index.php" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -33,6 +53,9 @@
       <option name="presentableId" value="Default" />
       <updated>1609603945270</updated>
       <workItem from="1609603946549" duration="1826000" />
+      <workItem from="1611486785683" duration="332000" />
+      <workItem from="1611487131676" duration="5093000" />
+      <workItem from="1611501844915" duration="7282000" />
     </task>
     <servers />
   </component>
@@ -40,10 +63,26 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="72" y="181" key="#Deployment" timestamp="1611502270932">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="72" y="181" key="#Deployment/0.0.1920.1040@0.0.1920.1040" timestamp="1611502270932" />
     <state x="1194" y="150" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1609604662712">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1194" y="150" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1609604662712" />
+    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1611488609829">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1611488609829" />
+    <state x="100" y="100" width="774" height="840" key="DirDiffDialog" timestamp="1611487434768">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="100" y="100" width="774" height="840" key="DirDiffDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1611487434768" />
+    <state x="260" y="278" key="FileChooserDialogImpl" timestamp="1611487585861">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="260" y="278" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1611487585861" />
     <state x="1049" y="375" key="NewPhpClassDialog" timestamp="1609605704922">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -52,5 +91,17 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1275" y="443" key="NewPhpFileDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1609604213894" />
+    <state x="182" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1611502045888">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="182" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1611502045888" />
+    <state x="769" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1611501810610">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="769" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1611501810610" />
+    <state x="365" y="253" key="ftp.server.browser" timestamp="1611502268079">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="365" y="253" key="ftp.server.browser/0.0.1920.1040@0.0.1920.1040" timestamp="1611502268079" />
   </component>
 </project>

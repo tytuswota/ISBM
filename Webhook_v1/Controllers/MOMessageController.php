@@ -10,7 +10,7 @@ class MOMessageController
 
     public static function createMessage($message)
     {
-        $processed = self::processedMessage(self::decodeHexToText($message->data));
+        $processed = self::processedMessage($message->data);
 
         $values = [
             'processed'         => $processed,
@@ -26,7 +26,7 @@ class MOMessageController
         $moMessage->store($values);
 
         if($processed){
-            return explode(';', self::decodeHexToText($message['data']))[0];
+            return self::hexArray($message['data'])[0];
         }else{
             return 0;
 	}
@@ -34,11 +34,10 @@ class MOMessageController
 
     public static function processedMessage($data)
     {
-        if(strpos($data, ';') !== false)
+        if(self::hexArray($data)[0] > 0)
         {
-            $dataArray = explode(';', $data);
-            if(in_array($dataArray[0], $GLOBALS['PROTOCOL_NUMBERS']))
-	    {
+            if(in_array(self::hexArray($data)[0], $GLOBALS['PROTOCOL_NUMBERS']))
+	        {
                 return 'true';
             }else {
                 return 'false';
@@ -48,9 +47,14 @@ class MOMessageController
         }
     }
 
-    public static function decodeHexToText($hex) {
-        $str = '';
-        for($i=0;$i<strlen($hex);$i+=2) $str .= chr(hexdec(substr($hex,$i,2)));
-        return $str;
+    public static function hexArray($data)
+    {
+        $hexArray = [];
+        try
+        {
+            return $hexArray = str_split($data, 8);
+        }catch (Exception $exceptione){
+            return $hexArray[0] = 0;
+        }
     }
 }

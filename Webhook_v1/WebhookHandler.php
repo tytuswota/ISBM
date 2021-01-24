@@ -25,25 +25,32 @@ spl_autoload_register(function($class)
     }
 });
 
+
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     $json  = file_get_contents('php://input');
     $proto = MOMessageController::createMessage(json_decode($json));
     
     switch($proto){
     case 1:
-	LocalizationController::createLocalization();    
+	    LocalizationController::createLocalization(json_decode($json));
 	break;
-      case 2:
+        case 2:
+            //TO DO
 	break;
       case 3:
+          //TO DO
 	break;
       case 4:
+          //TO DO
 	break;      
       case 5:
+          //TO DO
 	break;
       case 6:
+          //TO DO
         break;
       case 7:
+          //TO DO
         break;
       default:
 	break;	
