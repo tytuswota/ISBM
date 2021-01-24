@@ -83,7 +83,14 @@ void Message::sendMessage(uint8_t* msg, size_t size)
 {
   // Send the message
   SerialUSB.print("Trying to send the message.  This might take several minutes.\r\n");
-
+  err = modem.getSignalQuality(signalQuality);
+  
+  if (err != ISBD_SUCCESS)
+  {
+    SerialUSB.print("SignalQuality failed: error ");
+    SerialUSB.println(err);
+    return;
+  }
   
   err = modem.sendSBDBinary(msg, size);
   if (err != ISBD_SUCCESS)
@@ -97,6 +104,8 @@ void Message::sendMessage(uint8_t* msg, size_t size)
   {
     SerialUSB.print("Message send ");
   }
+
+  return;
 }
 
 void Message::getMessage()

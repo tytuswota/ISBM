@@ -49,7 +49,7 @@ void Clock::getDateTime(int &day, int &month, int &hour, int &minute)
     minute = rtc.getMinutes();
 }
 
-bool alarmHasMatch(int hour, int minute)
+bool Clock::alarmHasMatch(int hour, int minute)
 {
     if(hour == rtc.getHours() && minute == rtc.getMinutes()) return true;
     return false;

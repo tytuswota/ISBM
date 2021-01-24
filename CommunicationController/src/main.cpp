@@ -2,6 +2,7 @@
 #include "message.h"
 #include <gps.h>
 #include <clock.h>
+#include <IridiumSBD.h>
 
 int alarmMonth, alarmDay, alarmHour, alarmMinute;
 bool alarmIsSet = false;
@@ -13,6 +14,7 @@ Uart gpsSerial(&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
 #include "wiring_private.h" // pinPeripheral() function
 #define CSPIN 6
 #define Time 25
+#define SEND_MSG_MINUTE_TIME 10
 
 //D3-MISO, D4-MOSI, D5-SCK
 SPIClass SPI2 (&sercom2, 3, 5, 4, SPI_PAD_0_SCK_3, SERCOM_RX_PAD_1); 
@@ -38,11 +40,63 @@ void SERCOM1_Handler()
   gpsSerial.IrqHandler();
 }
 
+void gpsCall()
+{
+  float lattitude;
+  float longitude;
+  int day;
+  int month;
+  int hour;
+  int minute;
+  gps.getLattitudeLongitude(gpsSerial, lattitude, longitude, day, month, hour, minute);
+  
+  SerialUSB.println("lat: " + String(lattitude, 6));
+  SerialUSB.println("long: " + String(longitude, 6));
+}
+
+void setAlarm(int minutes)
+{
+  clock.getDateTime(alarmMonth, alarmDay, alarmHour, alarmMinute);    // hier worde de alarmtijd gesynced met de clock
+      
+  alarmMinute += minutes;                                // hier word het aantal minuten opgeteld bij de alarmtijd
+  if(alarmMinute > 59)                                                // als aantal minuten groter is dan 60 word het omgezet in aantal uren en minuten
+  {
+    alarmHour +=  alarmMinute / 60;
+    alarmMinute %=  60;
+  }
+
+  gpsCall();
+  
+  alarmIsSet = true;
+}
+
 void loop() 
 {
   //digitalWrite(CSPIN, LOW);// Select can bus
   //SPI2.transfer('a');//Setting character
   //digitalWrite(CSPIN, HIGH);// Deselect can bus
+
+  if(alarmIsSet)                                                          // alleen als er een alarm is gezet wordt deze if statement aangeroepen
+  {
+    if(clock.alarmHasMatch(alarmHour, alarmMinute))                       // als de alarm tijd overeenkomt met huidige tijd -> alarm gaat af
+    {
+      SerialUSB.print("ALARM OM: ");
+      SerialUSB.print(alarmHour);
+      SerialUSB.print(":");
+      SerialUSB.print(alarmMinute);
+      alarmIsSet = false;
+      
+      float lattitude;
+      float longitude;
+      int day;
+      int month;
+      int hour;
+      int minute;
+      gps.getLattitudeLongitude(gpsSerial, lattitude, longitude, day, month, hour, minute);
+      msg.sendGpsMessage(lattitude, longitude, day, month, hour, minute);
+      setAlarm(SEND_MSG_MINUTE_TIME);
+    }
+  }
   
   if(!msg.orders)
   {
@@ -72,7 +126,6 @@ void loop()
       int month;
       int hour;
       int minute;
-      SerialUSB.println("in the getgps function");
       gps.getLattitudeLongitude(gpsSerial, lattitude, longitude, day, month, hour, minute);
 
       SerialUSB.println("lat: " + String(lattitude, 6));
@@ -119,29 +172,16 @@ void loop()
     if((input == "set alarm"))
     {
       SerialUSB.println("Om de hoeveel minuten moet het alarm afgaan?");
-      String alarmMinutes = SerialUSB.readString();
-      clock.getDateTime(alarmMonth, alarmDay, alarmHour, alarmMinute);    // hier worde de alarmtijd gesynced met de clock
+      String alarmMinutes = "";
       
-      alarmMinute += alarmMinutes.toInt();                                // hier word het aantal minuten opgeteld bij de alarmtijd
-      if(alarmMinute > 59)                                                // als aantal minuten groter is dan 60 word het omgezet in aantal uren en minuten
+      while (alarmMinutes.equals(""))
       {
-        alarmHour +=  alarmMinute / 60;
-        alarmMinute %=  60;
+        alarmMinutes = SerialUSB.readString();
       }
-      
-      alarmIsSet = true;
-    }
-  }
 
-  if(alarmIsSet)                                                          // alleen als er een alarm is gezet wordt deze if statement aangeroepen
-  {
-    if(clock.alarmHasMatch(alarmHour, alarmMinute))                       // als de alarm tijd overeenkomt met huidige tijd -> alarm gaat af
-    {
-      SerialUSB.print("ALARM OM: ");
-      SerialUSB.print(alarmHour);
-      SerialUSB.print(":");
-      SerialUSB.print(alarmMinute);
-      alarmIsSet = false;
+      setAlarm(alarmMinutes.toInt());
+      
+      msg.orders = false;
     }
   }
 }

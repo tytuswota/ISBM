@@ -15,7 +15,7 @@ class Clock
     void showDateTime();
     void getDateTime(int &day, int &month, int &hour, int &minute);
     bool alarmHasMatch(int hour, int minute);
-};  
+}; 
 
 extern Clock clock;
 
