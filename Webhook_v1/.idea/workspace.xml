@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ea82598a-2bee-40d1-99a4-eba777b5b494" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CommunicationController/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CommunicationController/src/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/LocalizationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/LocalizationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/MOMessageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MOMessageController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebhookHandler.php" beforeDir="false" afterPath="$PROJECT_DIR$/WebhookHandler.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/view.php" beforeDir="false" afterPath="$PROJECT_DIR$/view.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +50,7 @@
       <workItem from="1609603946549" duration="1826000" />
       <workItem from="1611486785683" duration="332000" />
       <workItem from="1611487131676" duration="5093000" />
-      <workItem from="1611501844915" duration="7282000" />
+      <workItem from="1611501844915" duration="8386000" />
     </task>
     <servers />
   </component>

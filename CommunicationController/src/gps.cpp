@@ -13,7 +13,7 @@ void GPS::SETUP()
 }
 
 // Get the GPS module data
-void GPS::getTime()
+void getTime()
 {
     clock.syncTime((gpsModule.time.hour() + 1), gpsModule.time.minute(), // +1 hour for CET
     gpsModule.time.second(), gpsModule.date.day(), gpsModule.date.month(), gpsModule.date.year());

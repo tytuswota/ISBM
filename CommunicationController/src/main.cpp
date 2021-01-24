@@ -92,7 +92,7 @@ void loop()
     if(clock.alarmHasMatch(alarmHour, alarmMinute))       
     {
       SerialUSB.print("ALARM OM: ");
-      SerialUSB.print(alarmHour, " : ", alarmMinute);
+      SerialUSB.print(alarmHour + " : " + alarmMinute);
       alarmIsSet = false;
       
       float lattitude, longitude;

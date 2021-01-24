@@ -143,7 +143,7 @@ void Message::getMessage()
       // First time through send+receive; subsequent loops receive only
       if (!messageSent)
       {
-        err = modem.sendReceiveSBDBinary(buffer, 11, buffer, bufferSize)
+        err = modem.sendReceiveSBDBinary(buffer, 11, buffer, bufferSize);
       }
       else
       {
