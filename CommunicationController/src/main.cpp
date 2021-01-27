@@ -14,7 +14,7 @@ bool alarmIsSet = false; // Boolean for the alarm
 Uart gpsSerial(&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
 
 #define CS_PIN 6 // CAN-bus SPI pin 
-#define SEND_MSG_MINUTE_TIME 10 // Time to send a message
+#define SEND_MSG_MINUTE_TIME 5 // Time to send a message
 
 // Serial communication for CAN-bus
 SPIClass SPI2 (&sercom2, 3, 5, 4, SPI_PAD_0_SCK_3, SERCOM_RX_PAD_1); // D3-MISO, D4-MOSI, D5-SCK
@@ -37,7 +37,7 @@ void setup() {
 }
 
 // Open a serial communication for the GPS 
-void sercom1Handler()
+void SERCOM1_Handler()
 {
   gpsSerial.IrqHandler();
 }
@@ -61,6 +61,7 @@ void gpsCall()
 // Alarm to send GPS location on specific time
 void setAlarm(int minutes)
 {
+  SerialUSB.print("Alarm was set:");
   // Sync the alarm time with the clock
   clock.getDateTime(alarmMonth, alarmDay, alarmHour, alarmMinute); 
       
@@ -110,8 +111,10 @@ void loop()
   // Check if there is a order
   if(!msg.orders)
   {
+    setAlarm(SEND_MSG_MINUTE_TIME);
     SerialUSB.println("Waiting for orders...");
     SerialUSB.println("give user input!");
+    
     msg.orders = true;
   }
 
