@@ -71,7 +71,7 @@ void setAlarm(int minutes)
   // If the minutes are bigger than 60 than the time is changed to hours
   if (alarmMinute > 59)  
   {
-    alarmHour += alarmMinute / 60;
+    alarmHour += alarmMinute / 60 % 24;
     alarmMinute %= 60;
   }
 
