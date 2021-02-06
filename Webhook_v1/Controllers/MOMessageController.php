@@ -26,7 +26,7 @@ class MOMessageController
         $moMessage->store($values);
 
         if($processed){
-            return self::hexArray($message['data'])[0];
+            return unpack("i", hex2bin(self::hexArray($message->data)[0]))[1];
         }else{
             return 0;
 	}
@@ -36,14 +36,14 @@ class MOMessageController
     {
         if(self::hexArray($data)[0] > 0)
         {
-            if(in_array(self::hexArray($data)[0], $GLOBALS['PROTOCOL_NUMBERS']))
+            if(in_array(unpack("i", hex2bin(self::hexArray($data)[0]))[1], $GLOBALS['PROTOCOL_NUMBERS']))
 	        {
                 return 'true';
             }else {
-                return 'false';
+                return 'falseA';
             }
         } else {
-            return 'false';
+            return 'falseB';
         }
     }
 

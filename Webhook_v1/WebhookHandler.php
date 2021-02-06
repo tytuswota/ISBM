@@ -25,14 +25,13 @@ spl_autoload_register(function($class)
     }
 });
 
-
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     $json  = file_get_contents('php://input');
     $proto = MOMessageController::createMessage(json_decode($json));
     
     switch($proto){
     case 1:
-	    LocalizationController::createLocalization(json_decode($json));
+	    LocalizationController::createLocalization(json_decode($json)->data);
 	break;
         case 2:
             //TO DO
